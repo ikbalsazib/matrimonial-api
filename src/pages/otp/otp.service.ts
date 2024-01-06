@@ -60,11 +60,8 @@ export class OtpService {
           _id: saveData._id,
         };
         // Sent Bulk Sms
-        this.bulkSmsService.sentSingleSms(
-          phoneNo,
-          `Your queriescare.com otp code is ${code}`,
-        );
-        console.log("code",code)
+        this.bulkSmsService.sentSingleSms(phoneNo, `Your otp code is ${code}`);
+        console.log('code', code);
         return {
           success: true,
           message: 'Success! OTP code has been sent to your phone number.',
@@ -86,11 +83,8 @@ export class OtpService {
           _id: saveData._id,
         };
         // Sent Bulk Sms
-        this.bulkSmsService.sentSingleSms(
-          phoneNo,
-          `Your queriescare.com otp code is ${code}`,
-        );
-        console.log("code",code)
+        this.bulkSmsService.sentSingleSms(phoneNo, `Your otp code is ${code}`);
+        console.log('code', code);
         return {
           success: true,
           message: 'Success! OTP code has been sent to your phone number.',

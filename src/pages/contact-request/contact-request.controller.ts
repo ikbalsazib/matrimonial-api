@@ -61,7 +61,10 @@ export class ContactRequestController {
     @Body()
     addContactRequestDto: AddContactRequestDto,
   ): Promise<ResponsePayload> {
-    return await this.contactRequestService.addContactRequest(user, addContactRequestDto);
+    return await this.contactRequestService.addContactRequest(
+      user,
+      addContactRequestDto,
+    );
   }
 
   @Post('/add-by-admin')
@@ -69,9 +72,11 @@ export class ContactRequestController {
   // @UseGuards(UserJwtAuthGuard)
   async addContactRequestByAdmin(
     @Body()
-      addContactRequestDto: AddContactRequestDto,
+    addContactRequestDto: AddContactRequestDto,
   ): Promise<ResponsePayload> {
-    return await this.contactRequestService.addContactRequestByAdmin(addContactRequestDto);
+    return await this.contactRequestService.addContactRequestByAdmin(
+      addContactRequestDto,
+    );
   }
 
   /**
@@ -107,12 +112,9 @@ export class ContactRequestController {
   @UseGuards(UserJwtAuthGuard)
   async getCartByUserId(@GetTokenUser() user: User): Promise<ResponsePayload> {
     console.log(user);
-    
-    return this.contactRequestService.getContactRequestByUserId(user);
-   
-    
-  }
 
+    return this.contactRequestService.getContactRequestByUserId(user);
+  }
 
   @Version(VERSION_NEUTRAL)
   @Get('/:id')
@@ -123,8 +125,6 @@ export class ContactRequestController {
     return await this.contactRequestService.getContactRequestById(id, select);
   }
 
-
-
   @Version(VERSION_NEUTRAL)
   @Get('get-contact-request-user-by-id/:id')
   @UsePipes(ValidationPipe)
@@ -132,9 +132,13 @@ export class ContactRequestController {
   async getContactRequestUserById(
     @Param('id', MongoIdValidationPipe) id: string,
     @Query() select: string,
-    @GetTokenUser() user: User
+    @GetTokenUser() user: User,
   ): Promise<ResponsePayload> {
-    return await this.contactRequestService.getContactRequestUserById(id,user, select);
+    return await this.contactRequestService.getContactRequestUserById(
+      id,
+      user,
+      select,
+    );
   }
 
   /**
@@ -144,16 +148,18 @@ export class ContactRequestController {
   @Version(VERSION_NEUTRAL)
   @Put('/update')
   @UsePipes(ValidationPipe)
-  @AdminMetaRoles(AdminRoles.SUPER_ADMIN)
-  @UseGuards(AdminRolesGuard)
-  @AdminMetaPermissions(AdminPermissions.EDIT)
-  @UseGuards(AdminPermissionGuard)
-  @UseGuards(AdminJwtAuthGuard)
+  // @AdminMetaRoles(AdminRoles.SUPER_ADMIN)
+  // @UseGuards(AdminRolesGuard)
+  // @AdminMetaPermissions(AdminPermissions.EDIT)
+  // @UseGuards(AdminPermissionGuard)
+  // @UseGuards(AdminJwtAuthGuard)
   async updateContactRequestById(
     @Body() updateContactRequestDto: UpdateContactRequestDto,
   ): Promise<ResponsePayload> {
     console.log('updateContactRequestDto', updateContactRequestDto);
-    return await this.contactRequestService.updateContactRequestById(updateContactRequestDto);
+    return await this.contactRequestService.updateContactRequestById(
+      updateContactRequestDto,
+    );
   }
 
   @Version(VERSION_NEUTRAL)
@@ -168,7 +174,9 @@ export class ContactRequestController {
     @Body() updateContactRequestDto: UpdateContactRequestDto,
   ): Promise<ResponsePayload> {
     console.log('updateContactRequestDto', updateContactRequestDto);
-    return await this.contactRequestService.updateContactRequestByIdAndDelete(updateContactRequestDto);
+    return await this.contactRequestService.updateContactRequestByIdAndDelete(
+      updateContactRequestDto,
+    );
   }
 
   /**

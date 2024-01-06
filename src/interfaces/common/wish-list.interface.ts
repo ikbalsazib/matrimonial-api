@@ -1,5 +1,5 @@
-import { Product } from "./product.interface";
-import { User } from "../user/user.interface";
+import { Product } from './product.interface';
+import { User } from '../user/user.interface';
 
 export interface WishList {
   _id?: string;
@@ -8,4 +8,5 @@ export interface WishList {
   selectedQty?: Number;
   createdAt?: Date;
   updatedAt?: Date;
+  images?: string;
 }

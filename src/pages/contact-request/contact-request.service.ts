@@ -27,7 +27,8 @@ export class ContactRequestService {
   private logger = new Logger(ContactRequestService.name);
 
   constructor(
-    @InjectModel('ContactRequest') private readonly contactRequestModel: Model<ContactRequest>,
+    @InjectModel('ContactRequest')
+    private readonly contactRequestModel: Model<ContactRequest>,
     @InjectModel('Product') private readonly productModel: Model<Product>,
     @InjectModel('User') private readonly userModel: Model<User>,
     private configService: ConfigService,
@@ -43,23 +44,21 @@ export class ContactRequestService {
     addContactRequestDto: AddContactRequestDto,
   ): Promise<ResponsePayload> {
     try {
-
-      const conRequestData = await  this.contactRequestModel.findOne({'product._id': addContactRequestDto.product, 'user._id': user._id})
-      if (conRequestData){
-
+      const conRequestData = await this.contactRequestModel.findOne({
+        'product._id': addContactRequestDto.product,
+        'user._id': user._id,
+      });
+      if (conRequestData) {
         return {
           success: false,
-          message: 'We received your request, Our team contact you soon.',
+          message: 'We received your request, We will contact you soon.',
         } as ResponsePayload;
-      }
+      } else {
+        const productData = await this.productModel.findById({
+          _id: addContactRequestDto.product,
+        });
 
-      else {
-
-        const productData = await this.productModel
-            .findById({ _id: addContactRequestDto.product });
-
-        const userData = await this.userModel
-            .findById({ _id: user._id });
+        const userData = await this.userModel.findById({ _id: user._id });
         const mData = {
           ...addContactRequestDto,
           ...{
@@ -75,13 +74,14 @@ export class ContactRequestService {
           message: 'Request Successfully!',
         } as ResponsePayload;
       }
-
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
   }
 
-  async addContactRequestByAdmin(addContactRequestDto: AddContactRequestDto): Promise<ResponsePayload> {
+  async addContactRequestByAdmin(
+    addContactRequestDto: AddContactRequestDto,
+  ): Promise<ResponsePayload> {
     try {
       const productData = await this.productModel
         .findById({ _id: addContactRequestDto.product })
@@ -105,8 +105,6 @@ export class ContactRequestService {
       };
       const newData = new this.contactRequestModel(mData);
       await newData.save();
-
-
 
       return {
         success: true,
@@ -251,7 +249,9 @@ export class ContactRequestService {
     }
 
     try {
-      const dataAggregates = await this.contactRequestModel.aggregate(aggregateStages);
+      const dataAggregates = await this.contactRequestModel.aggregate(
+        aggregateStages,
+      );
       // .populate('user', 'fullName profileImg username')
       //     .populate('product', 'productName productSlug images categorySlug')
       //     .sort({createdAt: -1})
@@ -284,7 +284,10 @@ export class ContactRequestService {
       const contactRequests = await this.contactRequestModel
         .find()
         .populate('user', 'name phoneNo profileImg username')
-        .populate('product', 'name slug bioDataType guardianNumber receiveBiodata')
+        .populate(
+          'product',
+          'name slug bioDataType guardianNumber receiveBiodata user images',
+        )
         .sort({ createdAt: -1 });
       return {
         success: true,
@@ -296,7 +299,10 @@ export class ContactRequestService {
     }
   }
 
-  async getContactRequestById(id: string, select: string): Promise<ResponsePayload> {
+  async getContactRequestById(
+    id: string,
+    select: string,
+  ): Promise<ResponsePayload> {
     try {
       const data = await this.contactRequestModel.findById(id).select(select);
 
@@ -313,15 +319,20 @@ export class ContactRequestService {
     }
   }
 
-
-
-  async getContactRequestUserById(id: string,user:User, select: string): Promise<ResponsePayload> {
+  async getContactRequestUserById(
+    id: string,
+    user: User,
+    select: string,
+  ): Promise<ResponsePayload> {
     try {
-      console.log("id----",id)
-      console.log("user----",user)
-      const data = await this.contactRequestModel.findOne({'product._id': id, 'user._id':user._id});
+      console.log('id----', id);
+      console.log('user----', user);
+      const data = await this.contactRequestModel.findOne({
+        'product._id': id,
+        'user._id': user._id,
+      });
 
-      console.log("data--------",data)
+      console.log('data--------', data);
       // const contactRequestId = req.params.contactRequestId;
       // const contactRequest = await ContactRequestControl.findOne({_id: contactRequestId});
 
@@ -343,7 +354,9 @@ export class ContactRequestService {
     updateContactRequestDto: UpdateContactRequestDto,
   ): Promise<ResponsePayload> {
     try {
-      const data = await this.contactRequestModel.findById(updateContactRequestDto);
+      const data = await this.contactRequestModel.findById(
+        updateContactRequestDto,
+      );
       console.log('updateContactRequestDto++++', updateContactRequestDto);
       console.log('data++++', data);
 
@@ -358,15 +371,11 @@ export class ContactRequestService {
             { _id: updateContactRequestDto },
             { $set: updateContactRequestDto },
           );
-
-
         } else {
           await this.contactRequestModel.updateOne(
             { _id: updateContactRequestDto },
             { $set: updateContactRequestDto },
           );
-
-
         }
       }
 
@@ -420,7 +429,10 @@ export class ContactRequestService {
     user: User,
   ): Promise<ResponsePayload> {
     try {
-      await this.contactRequestModel.deleteOne({ _id: id, 'user._id': user._id });
+      await this.contactRequestModel.deleteOne({
+        _id: id,
+        'user._id': user._id,
+      });
       return {
         success: true,
         message: 'Success',
