@@ -44,6 +44,19 @@ export const ContactRequestSchema = new mongoose.Schema(
       receiveBiodata: {
         type: String,
       },
+      images: {
+        type: [String],
+      },
+      user: {
+        _id: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: false,
+        },
+        name: {
+          type: String,
+        },
+      },
       postType: {
         type: String,
         required: false,
