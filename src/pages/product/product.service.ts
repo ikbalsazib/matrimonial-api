@@ -20,7 +20,7 @@ import {
   UpdateProductDto,
 } from '../../dto/product.dto';
 import { ErrorCodes } from '../../enum/error-code.enum';
-import { Category } from '../../interfaces/common/category.interface';
+
 import { Product } from '../../interfaces/common/product.interface';
 import { ResponsePayload } from '../../interfaces/core/response-payload.interface';
 import { UtilsService } from '../../shared/utils/utils.service';
@@ -36,7 +36,7 @@ export class ProductService {
 
   constructor(
     @InjectModel('Product') private readonly productModel: Model<Product>,
-    @InjectModel('Category') private readonly categoryModel: Model<Category>,
+
     @InjectModel('User') private readonly userModel: Model<User>,
     private configService: ConfigService,
     private utilsService: UtilsService,
@@ -52,7 +52,7 @@ export class ProductService {
       const { name, slug } = addProductDto;
       let mData = {};
 
-      console.log('slug', slug)
+      console.log('slug', slug);
 
       // Check Slug Availability
       const fData = await this.productModel.findOne({ slug });
@@ -63,7 +63,7 @@ export class ProductService {
         };
       }
 
-      console.log('mData', mData)
+      console.log('mData', mData);
 
       const finalData = { ...addProductDto, ...mData };
       const newData = new this.productModel(finalData);
@@ -560,9 +560,7 @@ export class ProductService {
 
   async getProductById(id: string, select: string): Promise<ResponsePayload> {
     try {
-      const data = await this.productModel
-        .findById(id)
-        .select(select)
+      const data = await this.productModel.findById(id).select(select);
 
       return {
         success: true,

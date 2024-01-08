@@ -1,10 +1,4 @@
 import { User } from '../user/user.interface';
-import { Category } from './category.interface';
-import { SubCategory } from './sub-category.interface';
-import { Tag } from './tag.interface';
-import { Division } from './division.interface';
-import { Area } from './area.interface';
-import { Zone } from './zone.interface';
 
 export interface Product {
   _id?: string;
@@ -24,39 +18,10 @@ export interface Product {
   seoDescription?: string;
   seoKeyword?: string;
   user?: User;
-  category?: Category;
-  subCategory?: SubCategory;
-  tags?: Tag[];
+
   status?: 'publish' | 'draft';
   videoUrl?: string;
   waterSystem?: string;
-
-  // Job Data
-  deadline?: Date;
-  jobRole?: string;
-  jobType?: string;
-  salaryTo?: number;
-  salaryFrom?: number;
-  requiredEducation?: string;
-  experience?: string;
-  companyName?: string;
-  jobPostBy?: string;
-  vacancy?: string;
-
-  // To Let
-  balcony?: string;
-  bedroom?: string;
-  bathroom?: string;
-  availableFrom?: string;
-  floorNo?: string;
-  flatCategory?: string;
-  flatType?: string;
-  address?: string;
-  division?: Division;
-  area?: Area;
-  zone?: Zone;
-  rentPrice?: number;
-
   snakottoBisoi?: string;
   snakonttoPassingYear?: string;
   snatokPassingYear?: string;
@@ -213,12 +178,4 @@ export interface Product {
   sontanMaya?: string;
   rajiMaya?: string;
   sundorjo?: string;
-}
-
-interface CatalogInfo {
-  _id?: string;
-  name?: string;
-  nameBn?: string;
-  nameIt?: string;
-  slug?: string;
 }
